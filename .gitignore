@@ -1,0 +1,7 @@
+/venv/
+tests/
+main/
+.pytest_cache/
+.vscode/
+app/
+db.sqlite3
