@@ -1,2 +1,4 @@
 /venv/
 /.vscode/
+/main/__pycache__/
+/tests/__pycache__/

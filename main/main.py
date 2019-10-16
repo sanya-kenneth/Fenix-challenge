@@ -32,10 +32,15 @@ def compute_days_of_lighting(rate1, day1_in, rate2, day2_in, rate3,
     day1_days = 0
     day2_days = 0
     day3_days = 0
+    day1_2_days = 0
+    day1_3_days = 0
+    day2_3_days = 0
+    day2_1_3_days = 0
     # day input for each loan
     day1 = loan_days[0][0]
     day2 = loan_days[1][0]
     day3 = loan_days[2][0]
+    day1_2 = day1 + day2
     # rate input for each loan
     day1_rate = loan_days[0][1]
     day2_rate = loan_days[1][1]
@@ -47,31 +52,39 @@ def compute_days_of_lighting(rate1, day1_in, rate2, day2_in, rate3,
     # total amount customer has paid
     customer_payment = customer_payment + balance
     while daily_rate < customer_payment:
+        while day1 == day2:
+            daily_rate = day1_rate + day2_rate
+            day1_2_days = day1_2_days + 1
+            day1_2 = day1_2 + 1
+            customer_payment -= daily_rate
+            if day1_2 > day3 or daily_rate > customer_payment:
+                break
+        total_days_of_power = total_days_of_power + day1_2_days
         # compute days for the first loan
-        while day1 < day2:
+        while day1 < day2 and daily_rate < customer_payment:
             daily_rate = day1_rate
             day1_days = day1_days + 1
             day1 = day1 + 1
             customer_payment -= daily_rate
             if day1 >= day2:
-                total_days_of_power = total_days_of_power + day1_days
                 break
+        total_days_of_power = total_days_of_power + day1_days
         # compute days for the second loan
-        while day2 < day3:
+        while day2 < day3 and daily_rate < customer_payment:
             daily_rate = day2_rate + day1_rate
             day2_days = day2_days + 1
             day2 = day2 + 1
             customer_payment -= daily_rate
             if day2 >= day3:
-                total_days_of_power = total_days_of_power + day2_days
                 break
+        total_days_of_power = total_days_of_power + day2_days
         # compute days for the third loan 
-        while day3:
+        while day3 and daily_rate < customer_payment:
             daily_rate = day3_rate + day2_rate + day1_rate
             day3_days = day3_days + 1
             day3 = day3 + 1
             customer_payment -= daily_rate
             if daily_rate > customer_payment:
-                total_days_of_power = total_days_of_power + day3_days
                 break
+        total_days_of_power = total_days_of_power + day3_days
     return {"days_of_power": total_days_of_power, "customer_balance": customer_payment}
