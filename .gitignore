@@ -1,0 +1,9 @@
+venv/
+.vscode/
+.pytest_cache/
+/main/
+/tests/
+app/__pycache__/
+db.sqlite3
+/app/fenixapp/__pycache__/
+/app/fenixapp/management/commands/__pycache__/
